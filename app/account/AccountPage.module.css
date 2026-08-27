@@ -1,0 +1,539 @@
+.pageWrapper {
+  --acc-canvas: #f4f2ed;
+  --acc-ink: #09090b;
+  --acc-muted: #65656d;
+  --acc-line: rgba(9, 9, 11, 0.14);
+  --acc-accent: #f2cf45;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--acc-canvas);
+  color: var(--acc-ink);
+  user-select: none;
+}
+
+.mainContent {
+  flex: 1;
+}
+
+/* =========================================================
+   1. EDITORIAL ACCOUNT HEADER
+   ========================================================= */
+.headerSection {
+  position: relative;
+  overflow: hidden;
+  background: var(--acc-canvas);
+  border-bottom: 1px solid var(--acc-line);
+  padding: clamp(2.2rem, 4vw, 3.5rem) clamp(1rem, 2.5vw, 2.5rem);
+}
+
+.headerShell {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 82rem);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--acc-muted);
+  text-transform: uppercase;
+}
+
+.breadcrumb a {
+  color: var(--acc-muted);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: var(--acc-ink);
+}
+
+.breadcrumbSep {
+  color: #a1a1aa;
+}
+
+.breadcrumbCurrent {
+  color: var(--acc-ink);
+  font-weight: 800;
+}
+
+.headerRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.headerTitleBlock {
+  max-width: 44rem;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: var(--acc-ink);
+  text-transform: uppercase;
+}
+
+.eyebrowLine {
+  width: 2rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.pageTitle {
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  line-height: 0.88;
+  color: var(--acc-ink);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.userSummaryTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.85rem;
+  background: #ffffff;
+  border: 1px solid var(--acc-line);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--acc-ink);
+}
+
+.vipBadge {
+  background: var(--acc-accent);
+  color: #000000;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.58rem;
+  font-weight: 900;
+}
+
+.watermarkWord {
+  position: absolute;
+  right: -1rem;
+  bottom: -1rem;
+  z-index: 1;
+  font-size: clamp(6rem, 15vw, 13rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  color: rgba(9, 9, 11, 0.032);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  line-height: 0.8;
+}
+
+/* =========================================================
+   2. MAIN ACCOUNT DASHBOARD LAYOUT
+   ========================================================= */
+.dashboardShell {
+  width: min(100%, 82rem);
+  margin-inline: auto;
+  padding: clamp(2rem, 3.5vw, 3.5rem) clamp(1rem, 2.5vw, 2.5rem);
+}
+
+.dashboardLayout {
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+/* ---------------------------------------------------------
+   LEFT ACCOUNT SIDEBAR NAVIGATION
+   --------------------------------------------------------- */
+.navSidebar {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid var(--acc-line);
+  position: sticky;
+  top: 5.5rem;
+}
+
+.navSidebarHeader {
+  padding: 1.15rem 1.25rem;
+  border-bottom: 1px solid var(--acc-line);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.userAvatar {
+  width: 2.35rem;
+  height: 2.35rem;
+  display: grid;
+  place-items: center;
+  background: var(--acc-ink);
+  color: #ffffff;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.95rem;
+  font-weight: 900;
+}
+
+.userMeta strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.userMeta span {
+  display: block;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.58rem;
+  font-weight: 750;
+  color: var(--acc-muted);
+}
+
+.navBtnList {
+  display: flex;
+  flex-direction: column;
+}
+
+.navTabBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.95rem 1.25rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(9, 9, 11, 0.08);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--acc-muted);
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.navTabBtn:hover {
+  background: #faf9f6;
+  color: var(--acc-ink);
+}
+
+.navTabBtnActive {
+  background: var(--acc-ink);
+  color: #ffffff;
+}
+
+.navTabBtnActive:hover {
+  background: var(--acc-ink);
+  color: #ffffff;
+}
+
+.navTabIconGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.95rem 1.25rem;
+  background: #faf9f6;
+  border: none;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #ef4444;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+}
+
+.logoutBtn:hover {
+  background: #fee2e2;
+}
+
+/* ---------------------------------------------------------
+   MAIN DASHBOARD CONTENT AREA
+   --------------------------------------------------------- */
+.mainCard {
+  background: #ffffff;
+  border: 1px solid var(--acc-line);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--acc-line);
+}
+
+.cardHeader h2 {
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--acc-ink);
+  margin: 0;
+}
+
+.cardHeader span {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--acc-muted);
+  text-transform: uppercase;
+}
+
+/* Forms */
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formLabel {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acc-muted);
+}
+
+.formInput {
+  padding: 0.75rem 0.95rem;
+  background: #f4f2ed;
+  border: 1px solid var(--acc-line);
+  font-size: 0.85rem;
+  color: var(--acc-ink);
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.formInput:focus {
+  background: #ffffff;
+  border-color: var(--acc-ink);
+}
+
+.saveProfileBtn {
+  align-self: flex-start;
+  padding: 0.85rem 1.85rem;
+  background: var(--acc-ink);
+  color: #ffffff;
+  border: 1px solid var(--acc-ink);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.saveProfileBtn:hover {
+  background: #27272a;
+  transform: translateY(-1px);
+}
+
+/* Orders List */
+.ordersList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.orderCard {
+  border: 1px solid var(--acc-line);
+  background: #faf9f6;
+}
+
+.orderTopBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.15rem;
+  background: #ffffff;
+  border-bottom: 1px solid var(--acc-line);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.68rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.orderId {
+  font-weight: 900;
+  color: var(--acc-ink);
+}
+
+.orderStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+  font-weight: 850;
+}
+
+.orderBody {
+  padding: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.orderItemThumb {
+  width: 4rem;
+  height: 5rem;
+  object-fit: cover;
+  border: 1px solid var(--acc-line);
+  background: #ffffff;
+}
+
+.trackOrderLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.15rem;
+  background: var(--acc-ink);
+  color: #ffffff;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+/* Addresses */
+.addressGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.addressCard {
+  padding: 1.25rem;
+  background: #faf9f6;
+  border: 1px solid var(--acc-line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.addressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  font-weight: 850;
+}
+
+/* Mobile Tabs Switcher */
+.mobileTabsBar {
+  display: none;
+  overflow-x: auto;
+  gap: 0.45rem;
+  padding-bottom: 0.85rem;
+  scrollbar-width: none;
+}
+
+.mobileTabsBar::-webkit-scrollbar {
+  display: none;
+}
+
+.mobileTabBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 0.95rem;
+  background: #ffffff;
+  border: 1px solid var(--acc-line);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.mobileTabBtnActive {
+  background: var(--acc-ink);
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .dashboardLayout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .navSidebar {
+    display: none;
+  }
+
+  .mobileTabsBar {
+    display: flex;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .addressGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .headerSection {
+    padding: 1.75rem 1rem;
+  }
+
+  .dashboardShell {
+    padding: 1.25rem 0.85rem 3rem;
+  }
+
+  .pageTitle {
+    font-size: 2.2rem;
+  }
+}

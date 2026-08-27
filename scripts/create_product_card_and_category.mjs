@@ -1,0 +1,455 @@
+import fs from 'fs';
+
+// 1. Create components/shop/ProductCard.module.css
+const productCardCss = `.card {
+  --card-ink: #09090b;
+  --card-muted: #71717a;
+  --card-line: rgba(9, 9, 11, 0.12);
+  --card-accent: #f2cf45;
+  --card-bg: #ffffff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  border: 1px solid var(--card-line);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  user-select: none;
+}
+
+.card:hover {
+  border-color: rgba(9, 9, 11, 0.3);
+  box-shadow: 0 16px 36px rgba(9, 9, 11, 0.08);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   MEDIA & IMAGE CONTAINER
+   ========================================================= */
+.mediaWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #f4f2ed;
+  display: block;
+  text-decoration: none;
+}
+
+.productImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+}
+
+.card:hover .productImg {
+  transform: scale(1.045);
+}
+
+/* Badges Stack */
+.badgeStack {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  pointer-events: none;
+}
+
+.tagBadge {
+  padding: 0.22rem 0.45rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.52rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--card-ink);
+  color: #ffffff;
+  line-height: 1;
+}
+
+.tagBadgeHot {
+  background: var(--card-accent);
+  color: #000000;
+}
+
+.gsmBadge {
+  padding: 0.22rem 0.45rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.52rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--card-line);
+  color: var(--card-ink);
+  line-height: 1;
+}
+
+/* Wishlist Button */
+.wishlistBtn {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 10;
+  width: 2.2rem;
+  height: 2.2rem;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--card-line);
+  color: var(--card-ink);
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.wishlistBtn:hover {
+  transform: scale(1.08);
+  background: #ffffff;
+  border-color: var(--card-ink);
+}
+
+.wishlistBtnActive {
+  background: #ffffff;
+  color: #ef4444;
+  border-color: #fca5a5;
+}
+
+.wishlistBtnActive svg {
+  fill: #ef4444;
+}
+
+/* Quick Add Size Bar (Slides up on desktop hover) */
+.quickSizeBar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  padding: 0.65rem;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--card-line);
+  transform: translateY(100%);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card:hover .quickSizeBar {
+  transform: translateY(0);
+}
+
+.quickSizeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--card-muted);
+}
+
+.quickSizeHeader strong {
+  color: #15803d;
+}
+
+.sizeBtns {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.sizeBtn {
+  flex: 1;
+  padding: 0.3rem 0;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.58rem;
+  font-weight: 800;
+  background: #f4f2ed;
+  border: 1px solid var(--card-line);
+  color: var(--card-ink);
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.sizeBtn:hover {
+  background: var(--card-ink);
+  border-color: var(--card-ink);
+  color: #ffffff;
+}
+
+/* =========================================================
+   PRODUCT CARD CONTENT
+   ========================================================= */
+.cardContent {
+  padding: 0.95rem 1rem 1.05rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.55rem;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--card-muted);
+  text-transform: uppercase;
+}
+
+.cardTitle {
+  font-size: 0.92rem;
+  font-weight: 850;
+  color: var(--card-ink);
+  text-decoration: none;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.18s ease;
+}
+
+.cardTitle:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+.cardFabric {
+  font-size: 0.72rem;
+  color: #65656d;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 0.55rem;
+  border-top: 1px solid rgba(9, 9, 11, 0.08);
+}
+
+.priceGroup {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.priceCurrent {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.96rem;
+  font-weight: 900;
+  color: var(--card-ink);
+}
+
+.priceOriginal {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.72rem;
+  color: #a1a1aa;
+  text-decoration: line-through;
+}
+
+.discountBadge {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.52rem;
+  font-weight: 850;
+  padding: 0.15rem 0.35rem;
+  background: var(--card-accent);
+  color: #000000;
+  line-height: 1;
+}
+
+.addBagBtn {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: grid;
+  place-items: center;
+  background: var(--card-ink);
+  color: #ffffff;
+  border: 1px solid var(--card-ink);
+  transition: background-color 0.18s ease, transform 0.2s ease;
+}
+
+.addBagBtn:hover {
+  background: #27272a;
+  transform: translateY(-1px);
+}
+
+.addBagBtn svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+/* =========================================================
+   RESPONSIVE OPTIMIZATIONS
+   ========================================================= */
+@media (max-width: 640px) {
+  .cardContent {
+    padding: 0.75rem;
+    gap: 0.45rem;
+  }
+
+  .cardTitle {
+    font-size: 0.82rem;
+  }
+
+  .priceCurrent {
+    font-size: 0.86rem;
+  }
+
+  .cardFabric {
+    display: none;
+  }
+
+  .quickSizeBar {
+    display: none;
+  }
+}
+`;
+
+fs.writeFileSync('components/shop/ProductCard.module.css', productCardCss, 'utf-8');
+
+// 2. Update components/shop/ProductCard.jsx
+const productCardJsx = `'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { Heart, ShoppingBag } from 'lucide-react';
+import { useShop } from '@/context/ShopContext';
+import styles from './ProductCard.module.css';
+
+export function ProductCard({ product }) {
+  const { toggleWishlist, isItemWishlisted, addToCart, showToast } = useShop();
+  const [isHovered, setIsHovered] = useState(false);
+  const wishlisted = isItemWishlisted(product.id);
+
+  const handleQuickAdd = (e, size) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product, size);
+    showToast(\`Added \${product.name} (Size: \${size}) to Bag!\`, 'success');
+  };
+
+  const handleWishlistToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product);
+  };
+
+  const isHot = product.badgeType === 'hot' || product.tag === 'BESTSELLER';
+
+  return (
+    <div
+      className={styles.card}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Visual Image Container linking to /product/[id] */}
+      <Link href={\`/product/\${product.id}\`} className={styles.mediaWrap} aria-label={product.name}>
+        <img
+          src={isHovered && product.gallery?.[1] ? product.gallery[1] : product.image}
+          alt={product.name}
+          className={styles.productImg}
+          loading="lazy"
+        />
+
+        {/* Top Badges */}
+        <div className={styles.badgeStack}>
+          {product.tag && (
+            <span className={[styles.tagBadge, isHot ? styles.tagBadgeHot : ''].join(' ')}>
+              {product.tag}
+            </span>
+          )}
+          {product.gsm && (
+            <span className={styles.gsmBadge}>{product.gsm}</span>
+          )}
+        </div>
+
+        {/* Wishlist Button */}
+        <button
+          type="button"
+          onClick={handleWishlistToggle}
+          className={[styles.wishlistBtn, wishlisted ? styles.wishlistBtnActive : ''].join(' ')}
+          aria-label={wishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
+        >
+          <Heart className="w-3.5 h-3.5" />
+        </button>
+
+        {/* Quick Size Selector Strip on Desktop Hover */}
+        <div className={styles.quickSizeBar}>
+          <div className={styles.quickSizeHeader}>
+            <span>QUICK ADD SIZE:</span>
+            <strong>IN STOCK</strong>
+          </div>
+          <div className={styles.sizeBtns}>
+            {product.sizes?.map((size) => (
+              <button
+                key={size}
+                type="button"
+                onClick={(e) => handleQuickAdd(e, size)}
+                className={styles.sizeBtn}
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        </div>
+      </Link>
+
+      {/* Product Information */}
+      <div className={styles.cardContent}>
+        <div className={styles.cardMeta}>
+          <span>{product.categoryLabel || product.category}</span>
+          {product.color && <span>{product.color}</span>}
+        </div>
+
+        <Link href={\`/product/\${product.id}\`} className={styles.cardTitle}>
+          {product.name}
+        </Link>
+
+        {product.fabric && (
+          <p className={styles.cardFabric}>{product.fabric}</p>
+        )}
+
+        {/* Pricing & Add to Bag */}
+        <div className={styles.priceRow}>
+          <div className={styles.priceGroup}>
+            <span className={styles.priceCurrent}>₹{product.price}</span>
+            {product.originalPrice && (
+              <span className={styles.priceOriginal}>₹{product.originalPrice}</span>
+            )}
+            {product.discount && (
+              <span className={styles.discountBadge}>{product.discount}</span>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={(e) => handleQuickAdd(e, product.sizes?.[0] || 'M')}
+            className={styles.addBagBtn}
+            title="Add to Bag"
+            aria-label="Add to Bag"
+          >
+            <ShoppingBag />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+`;
+
+fs.writeFileSync('components/shop/ProductCard.jsx', productCardJsx, 'utf-8');
+
+console.log('ProductCard updated successfully with Brand X modular styling!');

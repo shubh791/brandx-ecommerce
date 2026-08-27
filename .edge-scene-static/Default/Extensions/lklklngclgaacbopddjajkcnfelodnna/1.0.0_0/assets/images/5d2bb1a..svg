@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>ins</title>
+    <g id="ins" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect stroke="#757575" stroke-width="1.5" x="2.25" y="2.25" width="15.5" height="15.5" rx="5"></rect>
+        <circle stroke="#757575" stroke-width="1.5" cx="10" cy="10" r="3.25"></circle>
+        <circle stroke="#757575" cx="14.6849803" cy="5.16624524" r="1"></circle>
+    </g>
+</svg>

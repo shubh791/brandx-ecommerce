@@ -1,0 +1,5 @@
+2026/08/27-01:19:45.757 612c Creating DB D:\downloads\Downloads\brandx\my-app\.edge-scene-qa\Default\EdgeCoupons/coupons_data.db since it was missing.
+2026/08/27-01:19:45.791 612c Reusing MANIFEST D:\downloads\Downloads\brandx\my-app\.edge-scene-qa\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/08/27-01:19:47.837 5e8c Level-0 table #5: started
+2026/08/27-01:19:47.993 5e8c Level-0 table #5: 683273 bytes OK
+2026/08/27-01:19:48.006 5e8c Delete type=0 #3

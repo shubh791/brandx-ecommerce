@@ -1,0 +1,20 @@
+<svg width="560" height="620" viewBox="0 0 560 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fabric" x1="96" y1="74" x2="448" y2="562" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#27272A"/>
+      <stop offset="0.48" stop-color="#09090B"/>
+      <stop offset="1" stop-color="#202024"/>
+    </linearGradient>
+    <filter id="shadow" x="22" y="28" width="516" height="570" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="24" stdDeviation="22" flood-color="#000" flood-opacity=".28"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path d="M190 92C213 72 242 62 280 62C318 62 347 72 370 92L489 151L440 270L386 243L406 550H154L174 243L120 270L71 151L190 92Z" fill="url(#fabric)"/>
+    <path d="M222 79C230 115 250 132 280 132C310 132 330 115 338 79" stroke="#52525B" stroke-width="9"/>
+    <path d="M174 243L190 166M386 243L370 166" stroke="#3F3F46" stroke-width="4" opacity=".7"/>
+    <path d="M154 550H406" stroke="#52525B" stroke-width="7"/>
+    <path d="M234 268L326 360M326 268L234 360" stroke="#F4F4F5" stroke-width="11" stroke-linecap="square"/>
+    <text x="280" y="400" fill="#A1A1AA" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" letter-spacing="5">BRAND X</text>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+2026-08-26 19:49:42.471: [INFO] CurrentProfilePath: D:\downloads\Downloads\brandx\my-app\.edge-scene-qa\Default
+2026-08-26 19:49:42.471: [INFO] Profiles total count: 1
+2026-08-26 19:49:42.472: [INFO] Profile: name=Profile 1 path=D:\downloads\Downloads\brandx\my-app\.edge-scene-qa\Default lastActive=2026-08-26T19:49:42.419Z
+2026-08-26 19:49:42.472: [INFO] LastUsedProfileDir: D:\downloads\Downloads\brandx\my-app\.edge-scene-qa\Default
+2026-08-26 19:49:42.472: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=D:\downloads\Downloads\brandx\my-app\.edge-scene-qa\Default lastActive=2026-08-26T19:49:42.419Z
+2026-08-26 19:49:42.472: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 19:49:42.472: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 19:49:42.472: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 19:49:42.472: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 19:49:42.572: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-08-26 19:49:43.788: [INFO] VisibilityChanged: 0
+2026-08-26 19:49:57.264: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1

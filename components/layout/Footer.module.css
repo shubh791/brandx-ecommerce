@@ -1,0 +1,426 @@
+.compactFooter {
+  --ft-canvas: #f4f2ed;
+  --ft-ink: #09090b;
+  --ft-muted: #65656d;
+  --ft-line: rgba(9, 9, 11, 0.12);
+  --ft-accent: #f2cf45;
+  position: relative;
+  background: var(--ft-canvas);
+  color: var(--ft-ink);
+  border-top: 1px solid var(--ft-line);
+}
+
+/* =========================================================
+   1. COMPACT SERVICE BENEFITS STRIP
+   ========================================================= */
+.benefitsStrip {
+  border-bottom: 1px solid var(--ft-line);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.benefitsGrid {
+  width: min(100%, 82rem);
+  margin-inline: auto;
+  padding: 1.15rem clamp(1rem, 2.5vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.benefitItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  position: relative;
+}
+
+.benefitIconWrap {
+  width: 2.2rem;
+  height: 2.2rem;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  border: 1px solid var(--ft-line);
+  color: var(--ft-ink);
+  flex-shrink: 0;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.benefitItem:hover .benefitIconWrap {
+  background: var(--ft-accent);
+  border-color: var(--ft-ink);
+  transform: translateY(-1px);
+}
+
+.benefitIcon {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.benefitText strong {
+  display: block;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  color: var(--ft-ink);
+  line-height: 1.2;
+}
+
+.benefitText span {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--ft-muted);
+  line-height: 1.3;
+}
+
+.benefitDivider {
+  position: absolute;
+  right: 0;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: var(--ft-line);
+}
+
+/* =========================================================
+   2. MAIN 3-PART FOOTER LAYOUT (COMPACT & CLEAN)
+   ========================================================= */
+.footerContainer {
+  width: min(100%, 82rem);
+  margin-inline: auto;
+  padding: 2.5rem clamp(1rem, 2.5vw, 2.5rem) 1.25rem;
+}
+
+.mainLayout {
+  display: grid;
+  grid-template-columns: 1.2fr 1.6fr 1.2fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  padding-bottom: 2.25rem;
+  border-bottom: 1px solid var(--ft-line);
+}
+
+/* LEFT — Brand */
+.brandCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.brandLogo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--ft-ink);
+}
+
+.logoBadge {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: grid;
+  place-items: center;
+  background: var(--ft-ink);
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoText strong {
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--ft-ink);
+}
+
+.logoText small {
+  margin-top: 0.25rem;
+  color: var(--ft-muted);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.48rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+.brandTagline {
+  color: #52525b;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* CENTER — Quick Links (2 Compact Columns) */
+.linksCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.desktopLinkCols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+.linkGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.groupHeading {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.16em;
+  color: var(--ft-ink);
+  text-transform: uppercase;
+}
+
+.linkList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.navLink {
+  color: var(--ft-muted);
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: color 0.18s ease, transform 0.18s ease;
+  display: inline-block;
+}
+
+.navLink:hover {
+  color: var(--ft-ink);
+  transform: translateX(3px);
+}
+
+.mobileAccordions {
+  display: none;
+}
+
+/* RIGHT — Visit + Follow */
+.visitCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.storeVisitBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.storeAddress {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  color: var(--ft-muted);
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.addressPin {
+  width: 0.85rem;
+  height: 0.85rem;
+  color: var(--ft-ink);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.directionsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  color: var(--ft-ink);
+  text-decoration: none;
+  transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.directionsLink:hover {
+  gap: 0.5rem;
+}
+
+.directionsArrow {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.followBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.socialIconsRow {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.socialIconBtn {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  border: 1px solid var(--ft-line);
+  color: var(--ft-ink);
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.2s ease;
+}
+
+.socialIconBtn:hover {
+  background: var(--ft-ink);
+  border-color: var(--ft-ink);
+  color: var(--ft-accent);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   3. THIN CLEAN LEGAL BAR
+   ========================================================= */
+.legalBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.15rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #71717a;
+}
+
+.legalLeft span {
+  color: #71717a;
+}
+
+.legalRight {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.legalRight a {
+  color: #71717a;
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.legalRight a:hover {
+  color: var(--ft-ink);
+}
+
+.legalDot {
+  color: #a1a1aa;
+}
+
+/* =========================================================
+   RESPONSIVE BREAKPOINTS (COMPACT MOBILE)
+   ========================================================= */
+@media (max-width: 900px) {
+  .mainLayout {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .brandCol {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .benefitsGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    padding: 1rem 0.85rem;
+  }
+
+  .benefitDivider {
+    display: none;
+  }
+
+  .footerContainer {
+    padding: 1.75rem 0.85rem 1rem;
+  }
+
+  .mainLayout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .desktopLinkCols {
+    display: none;
+  }
+
+  .mobileAccordions {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--ft-line);
+  }
+
+  .accordionItem {
+    border-bottom: 1px solid var(--ft-line);
+  }
+
+  .accordionTrigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    background: transparent;
+    border: none;
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 0.68rem;
+    font-weight: 850;
+    letter-spacing: 0.14em;
+    color: var(--ft-ink);
+    cursor: pointer;
+  }
+
+  .accordionArrow {
+    width: 0.85rem;
+    height: 0.85rem;
+    transition: transform 0.2s ease;
+  }
+
+  .accordionArrowOpen {
+    transform: rotate(180deg);
+  }
+
+  .accordionContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .accordionLink {
+    color: var(--ft-muted);
+    font-size: 0.8rem;
+    text-decoration: none;
+  }
+
+  .legalBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

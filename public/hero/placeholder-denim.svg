@@ -1,0 +1,20 @@
+<svg width="420" height="700" viewBox="0 0 420 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="denim" x1="90" y1="40" x2="330" y2="665" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#536477"/>
+      <stop offset=".5" stop-color="#293746"/>
+      <stop offset="1" stop-color="#17202A"/>
+    </linearGradient>
+    <filter id="shadow" x="30" y="12" width="360" height="680" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="24" stdDeviation="20" flood-color="#000" flood-opacity=".25"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path d="M82 38H338L359 655L240 664L210 283L180 664L61 655L82 38Z" fill="url(#denim)"/>
+    <path d="M82 112H338M210 38V283M101 56C112 99 141 121 188 121M319 56C308 99 279 121 232 121" stroke="#8190A0" stroke-width="5"/>
+    <path d="M106 180L180 209M314 180L240 209" stroke="#64768A" stroke-width="4"/>
+    <path d="M61 655L180 664M359 655L240 664" stroke="#A8B4C0" stroke-width="7"/>
+    <rect x="183" y="56" width="54" height="24" fill="#111827"/>
+    <text x="210" y="73" fill="#E5E7EB" font-family="Arial, sans-serif" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="2">BX</text>
+  </g>
+</svg>

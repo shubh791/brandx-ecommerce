@@ -1,0 +1,186 @@
+================================================================================
+ BRAND X (SAMALKHA) — FULL ARCHITECTURE & SYSTEM SCOPE SPECIFICATION
+================================================================================
+ Document Version : 2.0.0 (Production Blueprint)
+ Prepared By      : Senior Software Architect & Lead E-Commerce Engineer (6+ YoE)
+ Last Updated     : August 2026
+ Project Path     : D:\downloads\Downloads\brandx\my-app
+ Brand Flagship   : Brand X, Near Tota Ram Gate, Old Truck Union, Samalkha, Panipat, Haryana 132101
+================================================================================
+
+--------------------------------------------------------------------------------
+ 1. EXECUTIVE SUMMARY & BRAND CONTEXT
+--------------------------------------------------------------------------------
+Brand X is a luxury-tier Indian streetwear and heavy-knit apparel brand operating
+both a high-traffic physical flagship store in Samalkha (NH-1, Panipat) and a
+scalable direct-to-consumer (D2C) e-commerce web platform.
+
+Core Brand USPs:
+- Heavyweight Engineering: 240 GSM single jersey tees up to 450 GSM French Terry hoodies.
+- Modern Silhouettes: Drop-shoulder boxy cuts, non-sagging 1.25" collars, 6-pocket parachute cargos.
+- Omnichannel Integration: Physical store walk-in trials (08:00 AM - 08:30 PM daily), 30-minute
+  in-store click-and-collect pickup, and Pan-India express dispatch (2-3 business days).
+- Ultra-Clean Light Aesthetic: International minimalist design matching Snitch, Zara, and Represent.
+
+--------------------------------------------------------------------------------
+ 2. WORK ACCOMPLISHED TILL NOW (FRONTEND & UX COMPLETE)
+--------------------------------------------------------------------------------
+
+[A] Framework & Styling Core:
+- Next.js 16.3.2 (App Router with Turbopack), React 19.2.8, Tailwind CSS v4.
+- 100% Framer Motion physics for all micro-interactions, modal drawers, and toast alerts.
+- GSAP completely eliminated to ensure zero hydration mismatches, zero memory leaks, and 60fps performance.
+- Clean luxury Light Theme: Canvas `#ffffff`, off-white contrast `#f9fafb`, border `#e4e4e7`,
+  high-contrast obsidian typography `#09090b`.
+
+[B] Navigation & Header (Myntra-Style Mega Menu Architecture):
+- Brand Logo with Samalkha Flagship sub-brand mark.
+- Mega Menu Dropdowns on category hover (MEN, OVERSIZED, HOODIES, BOTTOMS, SETS, JACKETS)
+  with multi-column subcategory links and featured flagship drops.
+- Centered rounded search bar with live debounced filtering.
+- Right-aligned Action Bar:
+  * Profile: Popover card with direct "LOGIN / SIGNUP" modal trigger, order tracking, and store timings.
+  * Wishlist: Heart icon with real-time badge count and slide-out manager.
+  * Bag: Shopping bag icon with dynamic item count and animated drawer trigger.
+
+[C] Curated Home Landing Route (/):
+- Hero Banner: Simple everyday high-converting copy with 3D multi-image visual collage (Cyberpunk 450 GSM Hoodie,
+  260 GSM Mineral Tee, 6-Pocket Parachute Cargos) and direct category links (zero "#" anchor jumps).
+- Shop by Category Tiles: Visual photo tiles linking directly to dedicated collection routes.
+- Trending Bestsellers: Curated 8-item drop grid with instant size selection and 1-click Add to Bag.
+- Clean Footer: Full store address, Google Maps direct route, hours, WhatsApp desk, and policy links.
+
+[D] Strict Category Catalog Pages (/category/[slug]):
+- Dedicated routing for all departments:
+  * `/category/all` (Full Vault Catalog)
+  * `/category/hoodies` (450 GSM French Terry Hoodies)
+  * `/category/oversized-tees` (240–260 GSM Mineral & Combed Tees)
+  * `/category/cargos-denim` (Parachute Cargos & 14.5 Oz Selvedge Denim)
+  * `/category/tracksuits` (Velour 2-Piece Sets)
+  * `/category/jackets` (Quilted Bombers & Flannels)
+- Strict department isolation (no cross-contamination between categories).
+- Interactive breadcrumbs, dynamic count badges, live keyword search, and price/rating sorting.
+
+[E] High-Converting Product Detail Page (/product/[id]):
+- Interactive Multi-Angle Gallery with high-res zoom viewport and thumbnail switcher.
+- Human, conversational copywriting highlighting 240–450 GSM fabric weights, anti-shrink combed cotton, and boxy proportions.
+- Interactive Size Selector (`S`, `M`, `L`, `XL`, `XXL`) with live stock urgency indicator ("🔥 Only 4 units left in Size L").
+- Interactive Size Guide Modal with inches measurement chart (Chest, Length, Shoulder).
+- Dual Primary Action Buttons:
+  * `ADD TO BAG` (adds chosen size/quantity to global cart drawer).
+  * `BUY NOW` (1-click express checkout trigger with live price calculation).
+- Live Pincode Delivery Estimator (checks 6-digit Indian pincode for Samalkha same-day pickup or express shipping).
+- Trust Badges: 7-Day Free Size Exchange, 100% Combed Cotton Guarantee, Samalkha Store Pickup.
+- "Complete The Fit / You May Also Like" recommendation grid.
+
+[F] Global State Management (ShopContext.jsx):
+- Global Cart with quantity increment/decrement, size/color variant tracking, and automatic threshold calculation
+  (Free Express Shipping over ₹999).
+- Promo Code Engine supporting percentage and flat discounts (`BRANDX10`, `SAMALKHA20`, `DRIP100`).
+- Wishlist store with localStorage synchronization.
+- Authentication modal state (Login, Signup, Guest checkout).
+- Floating Toast notification system.
+
+--------------------------------------------------------------------------------
+ 3. BACKEND & API ARCHITECTURE SCOPE (NEXT PHASE)
+--------------------------------------------------------------------------------
+
+[A] Database Architecture & Schema (Prisma ORM with PostgreSQL):
+
+  1. User Model:
+     - id (UUID), name, email, phone, passwordHash, role ("CUSTOMER" | "ADMIN" | "DISPATCHER"),
+       addresses (1:N), isVip (Boolean), createdAt, updatedAt.
+
+  2. Product Model:
+     - id (String / SKU), name, slug, description, categoryId (FK), price (Int), originalPrice (Int),
+       discount (String), gsm (String), fabric (String), fit (String), color (String), colorCode (String),
+       tag (String), inStock (Boolean), stockCount (Int), sizes (Array: String), image (String),
+       gallery (Array: String), features (Array: String), isActive (Boolean), createdAt.
+
+  3. Order Model:
+     - id (String, e.g. "BX-892104"), customerId (FK / Nullable for Guest), guestName, guestPhone,
+       guestEmail, shippingAddress (JSON), billingAddress (JSON), subtotal (Int), discount (Int),
+       shippingFee (Int), totalAmount (Int), promoCode (String), paymentMethod ("UPI" | "COD" | "CARD"),
+       paymentStatus ("PENDING" | "PAID" | "FAILED" | "REFUNDED"),
+       fulfillmentStatus ("PLACED" | "CONFIRMED" | "PACKED_AT_HUB" | "DISPATCHED" | "OUT_FOR_DELIVERY" | "DELIVERED" | "CANCELLED"),
+       fulfillmentType ("EXPRESS_SHIPPING" | "SAMALKHA_STORE_PICKUP"),
+       trackingNumber (String), courierPartner (e.g. "Delhivery" | "Bluedart" | "StoreDesk"),
+       estimatedDelivery (DateTime), createdAt, updatedAt.
+
+  4. OrderItem Model:
+     - id (UUID), orderId (FK), productId (FK), productName, productImage, selectedSize,
+       selectedColor, unitPrice (Int), quantity (Int), total (Int).
+
+  5. TrackingEvent Model:
+     - id (UUID), orderId (FK), status, title, description, location (e.g. "Samalkha NH-1 Hub", "Delhi Distribution Center"),
+       timestamp (DateTime).
+
+[B] REST & Server-Sent Events (SSE) Endpoints:
+
+  - `POST /api/orders/create`       -> Validate cart, check stock, create order, issue Order ID (#BX-XXXXXX).
+  - `GET  /api/orders/[id]`         -> Retrieve order details and current status.
+  - `GET  /api/orders/[id]/stream`  -> Server-Sent Events (SSE) endpoint providing live real-time tracking updates.
+  - `POST /api/orders/verify-pincode` -> Verify Indian postal pincode delivery SLA.
+  - `POST /api/admin/products`      -> Admin CRUD endpoint to add / update / delete catalog items.
+  - `GET  /api/admin/orders`        -> List orders with status filters, date ranges, and fulfillment types.
+  - `PATCH /api/admin/orders/[id]/status` -> Update fulfillment state and dispatch tracking event.
+
+--------------------------------------------------------------------------------
+ 4. ADMIN DASHBOARD SPECIFICATION (/admin)
+--------------------------------------------------------------------------------
+A dedicated, protected portal for the Samalkha store manager and team:
+
+[A] Product Catalog Management:
+- Add New Streetwear Item form:
+  * Title, Category dropdown, Price, Original Price, GSM selector (240, 260, 280, 380, 450 GSM).
+  * Fabric composition, Fit type, Colorway picker, Size checkboxes (S, M, L, XL, XXL).
+  * High-res image URL / Cloudinary file upload with drag-and-drop gallery manager.
+  * Live stock count and "Show on Homepage" toggle.
+- Real-time Product Table with search, edit, pause listing, and stock modifier.
+
+[B] Order Fulfillment Desk:
+- Pipeline Kanban & Table View:
+  * [1] Newly Placed -> [2] Confirmed -> [3] Packed at Samalkha Hub -> [4] Dispatched -> [5] Delivered.
+- Quick Actions:
+  * 1-Click WhatsApp customer update ("Your order #BX-892104 is packed and ready!").
+  * 1-Click Print Thermal Shipping Label & GST Invoice.
+  * In-Store Pickup verification (scan order QR code / verify customer phone).
+
+[C] Store Analytics:
+- Daily Sales Volume, Average Order Value (AOV), Best Performing GSM categories, Low-Stock alerts.
+
+--------------------------------------------------------------------------------
+ 5. CLIENT REAL-TIME ORDER TRACKING SYSTEM (/track-order/[id])
+--------------------------------------------------------------------------------
+A customer-facing visual tracking page:
+
+- Interactive Step Progress Bar:
+  1. `Order Placed` (Timestamped)
+  2. `Confirmed & Quality Checked at Samalkha Flagship`
+  3. `Packed with Tamper-Proof Streetwear Seal`
+  4. `Dispatched via Express Courier / Ready for Store Pickup`
+  5. `Out for Delivery`
+  6. `Delivered`
+- Live SSE connection (`/api/orders/[id]/stream`):
+  * When admin updates status in `/admin`, client screen updates instantly without page refresh.
+- Map & Logistics Details:
+  * Dispatch origin: "Brand X Flagship, NH-1, Samalkha, Panipat (132101)".
+  * Courier tracking link (Delhivery / Bluedart AWB) or Store Pickup counter PIN.
+- Download Invoice PDF button & direct WhatsApp support link.
+
+--------------------------------------------------------------------------------
+ 6. PRODUCTION SKELETONS & ERROR RESILIENCE (loading.jsx, error.jsx)
+--------------------------------------------------------------------------------
+
+- `app/loading.jsx`:
+  * Minimalist brand pulse loader with skeleton cards for hero and category tiles.
+- `app/category/[slug]/loading.jsx`:
+  * Category banner skeleton + 8-card grid skeleton with subtle zinc shimmering.
+- `app/product/[id]/loading.jsx`:
+  * Dual-column layout skeleton (Left: square image frame, Right: title, size pills, buy buttons).
+- `app/error.jsx` & `app/not-found.jsx`:
+  * Clean recovery UI with "Return to Drops" button and emergency store hotline.
+
+================================================================================
+ END OF SPECIFICATION — READY FOR BACKEND & ADMIN IMPLEMENTATION
+================================================================================

@@ -1,0 +1,38 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "/assets/icons/128.png",
+         "16": "/assets/icons/16.png",
+         "32": "/assets/icons/32.png",
+         "48": "/assets/icons/48.png"
+      },
+      "default_popup": "popup.html"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "content_scripts": [ {
+      "js": [ "vendor.js", "runtime.js", "scripts/fab.js" ],
+      "matches": [ "https://*.facebook.com/*" ],
+      "run_at": "document_end"
+   }, {
+      "js": [ "vendor.js", "runtime.js", "scripts/inm.js" ],
+      "matches": [ "https://*.instagram.com/*" ],
+      "run_at": "document_end"
+   } ],
+   "description": "Popular Video & Image Downloader for Instagram and Facebook.",
+   "homepage_url": "https://www.sharekaro.app?uso=extentions",
+   "icons": {
+      "128": "/assets/icons/128.png",
+      "16": "/assets/icons/16.png",
+      "32": "/assets/icons/32.png",
+      "48": "/assets/icons/48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkV+WGDYooWOxIoASHYvCVdoZmigzrcFRuX4eC2Vpk6CVGNyTV04lJhi399aP1Piw92v0QzsKwgrb0oa/OnHL+JHS/vCwYktJJNq0lx1HGSTM8ab5xrSkTApdgP/fRFUv9hjBMBXwO7xalt2icoR4zCVoHy0mdZB9dBFFIEjxQsOvEMFZZ9fWcI7AUb3s70YyZNUI5ZEP0JUOrfKEi71rmbovs2IbrTq6jDZRdb/waMsmyLapioqsMcHqBAntQVn0yAPKyqPVifLezsnY73vJ8ptEcVITKikgfbCbNsovGmEmtjNMsXSG6vkmyMCZs8jKzU91aKgM1yhbbIl4J7LvnQIDAQAB",
+   "manifest_version": 3,
+   "name": "Video Downloader",
+   "options_page": "options.html",
+   "permissions": [ "storage", "activeTab" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.0.0"
+}

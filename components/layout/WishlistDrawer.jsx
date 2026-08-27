@@ -79,7 +79,7 @@ export function WishlistDrawer() {
                 </div>
               ) : (
                 <>
-                  <div className="flex-1 overflow-y-auto p-4 space-y-3 divide-y divide-zinc-200">
+                  <div className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-3 divide-y divide-zinc-200">
                     {wishlist.map((item) => (
                       <div key={item.id} className="pt-3 first:pt-0 flex gap-3.5 items-start">
                         <Link

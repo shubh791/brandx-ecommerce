@@ -77,24 +77,7 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (!isMobileMenuOpen) return undefined;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const handleEscape = (event) => {
-      if (event.key === 'Escape') {
-        setIsMobileMenuOpen(false);
-        mobileToggleRef.current?.focus();
-      }
-    };
-
-    window.addEventListener('keydown', handleEscape);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleEscape);
-    };
-  }, [isMobileMenuOpen]);
+  
 
   useEffect(() => () => {
     clearTimeout(megaMenuTimeoutRef.current);

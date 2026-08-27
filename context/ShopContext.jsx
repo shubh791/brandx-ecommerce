@@ -1,6 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import { productsData } from '../data/productsData';
 import { promoCodes } from '../data/promoData';
 import { siteConfig } from '../data/siteConfig';
@@ -8,7 +9,7 @@ import { siteConfig } from '../data/siteConfig';
 const ShopContext = createContext(null);
 
 export function ShopProvider({ children }) {
-  // Genuinely empty initial state, loaded from localStorage if available
+  const pathname = usePathname();
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -35,7 +36,7 @@ export function ShopProvider({ children }) {
   const [promoError, setPromoError] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
 
-  // Load user-added items from localStorage on initial mount (zero fake items)
+  // Load user-added items from localStorage on initial mount
   useEffect(() => {
     try {
       const savedCart = localStorage.getItem('bx_cart_v2');
@@ -65,12 +66,22 @@ export function ShopProvider({ children }) {
     } catch (e) {}
   }, [wishlist, isLoaded]);
 
-  // Global Body Scroll Lock & Escape Key Handler for Overlays
+  // AUTOMATIC ROUTE CHANGE CLEANUP: Close all overlays & ensure body scroll is NEVER trapped
   useEffect(() => {
-    if (!activeOverlay) return;
+    setActiveOverlay(null);
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+  }, [pathname]);
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+  // SINGLE CENTRALIZED BODY SCROLL LOCK MANAGER
+  useEffect(() => {
+    if (activeOverlay) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
 
     const handleEscape = (e) => {
       if (e.key === 'Escape') {
@@ -78,66 +89,67 @@ export function ShopProvider({ children }) {
       }
     };
 
-    window.addEventListener('keydown', handleEscape);
+    window.addEventListener('keydown', handleEscape, { passive: true });
     return () => {
-      document.body.style.overflow = previousOverflow;
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
       window.removeEventListener('keydown', handleEscape);
     };
   }, [activeOverlay]);
 
-  const toggleOverlay = (name) => {
+  const toggleOverlay = useCallback((name) => {
     setActiveOverlay((current) => (current === name ? null : name));
-  };
+  }, []);
 
-  const closeAllOverlays = () => {
+  const closeAllOverlays = useCallback(() => {
     setActiveOverlay(null);
-  };
+  }, []);
 
   const isCartOpen = activeOverlay === 'cart';
-  const setIsCartOpen = (val) => {
+  const setIsCartOpen = useCallback((val) => {
     if (typeof val === 'function') {
       setActiveOverlay((curr) => (val(curr === 'cart') ? 'cart' : null));
     } else {
       setActiveOverlay(val ? 'cart' : null);
     }
-  };
+  }, []);
 
   const isWishlistOpen = activeOverlay === 'wishlist';
-  const setIsWishlistOpen = (val) => {
+  const setIsWishlistOpen = useCallback((val) => {
     if (typeof val === 'function') {
       setActiveOverlay((curr) => (val(curr === 'wishlist') ? 'wishlist' : null));
     } else {
       setActiveOverlay(val ? 'wishlist' : null);
     }
-  };
+  }, []);
 
   const isAuthModalOpen = activeOverlay === 'auth';
-  const openAuthModal = (mode = 'login') => {
+  const openAuthModal = useCallback((mode = 'login') => {
     setAuthModalMode(mode);
     setActiveOverlay('auth');
-  };
-  const closeAuthModal = () => {
+  }, []);
+  const closeAuthModal = useCallback(() => {
     setActiveOverlay(null);
-  };
+  }, []);
 
   const isMobileMenuOpen = activeOverlay === 'menu';
-  const setIsMobileMenuOpen = (val) => {
+  const setIsMobileMenuOpen = useCallback((val) => {
     if (typeof val === 'function') {
       setActiveOverlay((curr) => (val(curr === 'menu') ? 'menu' : null));
     } else {
       setActiveOverlay(val ? 'menu' : null);
     }
-  };
+  }, []);
 
-  const showToast = (message, type = 'success') => {
+  const showToast = useCallback((message, type = 'success') => {
     const id = Date.now();
     setToastMessage({ message, type, id });
     setTimeout(() => {
       setToastMessage((current) => (current?.id === id ? null : current));
     }, 3200);
-  };
+  }, []);
 
-  const addToCart = (product, size = null, quantity = 1, color = null) => {
+  const addToCart = useCallback((product, size = null, quantity = 1, color = null) => {
     const chosenSize = size || (product.sizes && product.sizes[0]) || 'M';
     const chosenColor = color || product.color || 'Standard';
     const uniqueCartId = product.id + '-' + chosenSize + '-' + chosenColor;
@@ -164,14 +176,14 @@ export function ShopProvider({ children }) {
     });
 
     showToast('Added "' + product.name + '" (' + chosenSize + ') to Bag', 'success');
-  };
+  }, [showToast]);
 
-  const removeFromCart = (uniqueCartId) => {
+  const removeFromCart = useCallback((uniqueCartId) => {
     setCart((prev) => prev.filter((item) => item.uniqueCartId !== uniqueCartId));
     showToast('Item removed from Bag', 'info');
-  };
+  }, [showToast]);
 
-  const updateQuantity = (uniqueCartId, delta) => {
+  const updateQuantity = useCallback((uniqueCartId, delta) => {
     setCart((prev) =>
       prev
         .map((item) => {
@@ -183,11 +195,11 @@ export function ShopProvider({ children }) {
         })
         .filter(Boolean)
     );
-  };
+  }, []);
 
-  const clearCart = () => setCart([]);
+  const clearCart = useCallback(() => setCart([]), []);
 
-  const toggleWishlist = (product) => {
+  const toggleWishlist = useCallback((product) => {
     setWishlist((prev) => {
       const exists = prev.some((item) => item.id === product.id);
       if (exists) {
@@ -198,28 +210,28 @@ export function ShopProvider({ children }) {
         return [...prev, product];
       }
     });
-  };
+  }, [showToast]);
 
-  const isInWishlist = (productId) => wishlist.some((item) => item.id === productId);
+  const isInWishlist = useCallback((productId) => wishlist.some((item) => item.id === productId), [wishlist]);
 
-  const moveToCart = (product, size = null) => {
+  const moveToCart = useCallback((product, size = null) => {
     const chosenSize = size || (product.sizes && product.sizes[0]) || 'M';
     addToCart(product, chosenSize, 1);
     setWishlist((prev) => prev.filter((item) => item.id !== product.id));
     showToast('Moved "' + product.name + '" (' + chosenSize + ') to Bag', 'success');
-  };
+  }, [addToCart, showToast]);
 
-  const moveToWishlist = (cartItem) => {
+  const moveToWishlist = useCallback((cartItem) => {
     const matchedProduct = productsData.find((p) => p.id === cartItem.id) || cartItem;
     toggleWishlist(matchedProduct);
     removeFromCart(cartItem.uniqueCartId);
     showToast('Moved "' + cartItem.name + '" to Wishlist', 'success');
-  };
+  }, [toggleWishlist, removeFromCart, showToast]);
 
-  const openQuickView = (product) => setQuickViewProduct(product);
-  const closeQuickView = () => setQuickViewProduct(null);
+  const openQuickView = useCallback((product) => setQuickViewProduct(product), []);
+  const closeQuickView = useCallback(() => setQuickViewProduct(null), []);
 
-  const applyPromoCode = (inputCode) => {
+  const applyPromoCode = useCallback((inputCode) => {
     setPromoError(null);
     if (!inputCode) return false;
     const cleaned = inputCode.trim().toUpperCase();
@@ -238,13 +250,13 @@ export function ShopProvider({ children }) {
     setAppliedPromo(match);
     showToast('Coupon ' + match.code + ' applied!', 'success');
     return true;
-  };
+  }, [showToast]);
 
-  const removePromoCode = () => {
+  const removePromoCode = useCallback(() => {
     setAppliedPromo(null);
     setPromoError(null);
     showToast('Coupon removed', 'info');
-  };
+  }, [showToast]);
 
   const cartSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 

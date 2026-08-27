@@ -418,6 +418,8 @@
 }
 
 .drawerSheet {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   position: fixed;
   right: 0;
   bottom: 0;

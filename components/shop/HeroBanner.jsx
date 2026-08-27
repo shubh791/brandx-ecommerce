@@ -28,9 +28,7 @@ export function HeroBanner() {
   useGSAP(() => {
     const root = heroRef.current;
     const visual = visualRef.current;
-    if (!root || !visual) return;
-
-    const reduceMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (reduceMotion) {
       gsap.set([
@@ -76,7 +74,6 @@ export function HeroBanner() {
       }, 0.32)
       .from(`.${styles.annotation}`, { opacity: 0, duration: 0.45, stagger: 0.08 }, '-=0.36');
 
-    // Subtle ambient floating tweens
     gsap.to(`.${styles.blackTee} .${styles.objectPlane}`, {
       y: -8, rotateZ: -1.2, duration: 3.8, repeat: -1, yoyo: true, ease: 'sine.inOut',
     });
@@ -102,10 +99,8 @@ export function HeroBanner() {
       rotationY: '+=8', rotationX: '-=4', duration: 5.5, repeat: -1, yoyo: true, ease: 'sine.inOut',
     });
 
-    const mm = gsap.matchMedia();
-
-    // Run interactive pointer parallax ONLY on desktop with mouse (pointer: fine)
-    mm.add('(min-width: 1024px) and (pointer: fine)', () => {
+    const desktop = gsap.matchMedia();
+    desktop.add('(min-width: 1024px) and (pointer: fine)', () => {
       const objects = gsap.utils.toArray(`.${styles.parallaxLayer}`);
       const moveTo = objects.map((object) => ({
         x: gsap.quickTo(object, 'x', { duration: 0.65, ease: 'power3.out' }),
@@ -136,26 +131,22 @@ export function HeroBanner() {
         });
       };
 
-      visual.addEventListener('pointermove', handlePointerMove, { passive: true });
-      visual.addEventListener('pointerleave', resetPointer, { passive: true });
+      visual.addEventListener('pointermove', handlePointerMove);
+      visual.addEventListener('pointerleave', resetPointer);
       return () => {
         visual.removeEventListener('pointermove', handlePointerMove);
         visual.removeEventListener('pointerleave', resetPointer);
       };
     });
 
-    // Scroll scrub with proper trigger scope
-    const scrubTween = gsap.to(visual, {
+    gsap.to(visual, {
       yPercent: 6,
       scale: 0.98,
       ease: 'none',
       scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: 0.6 },
     });
 
-    return () => {
-      mm.revert();
-      scrubTween.kill();
-    };
+    return () => desktop.revert();
   }, { scope: heroRef });
 
   return (
@@ -172,72 +163,91 @@ export function HeroBanner() {
           </h1>
 
           <p className={styles.description}>
-            Streetwear made for the bold. High-density 240–450 GSM cottons, architectural silhouettes, and zero compromise. Visit the Samalkha flagship or cop online.
+            Everyday essentials to statement fits. Discover the latest from Brand X.
           </p>
 
           <div className={styles.actions}>
             <Link href="/category/all" className={styles.primaryCta}>
-              <span>EXPLORE COLLECTION</span>
-              <ArrowRight aria-hidden="true" />
+              SHOP NEW ARRIVALS <ArrowUpRight aria-hidden="true" />
             </Link>
-
-            <Link href="/#store-location" className={styles.secondaryCta}>
-              <span>VISIT SAMALKHA</span>
-              <ArrowUpRight aria-hidden="true" />
+            <Link href="/category/all" className={styles.secondaryCta}>
+              EXPLORE COLLECTION <ArrowRight aria-hidden="true" />
             </Link>
           </div>
 
-          <div className={styles.trustStrip}>
-            <div className={styles.trustItem}>
-              <strong>240–450 GSM</strong>
-              <span>Heavyweight build</span>
-            </div>
-            <div className={styles.trustItem}>
-              <strong>100% COTTON</strong>
-              <span>Combed & bio-washed</span>
-            </div>
-            <div className={styles.trustItem}>
-              <strong>SAME-DAY DISPATCH</strong>
-              <span>From Samalkha Hub</span>
-            </div>
-          </div>
+          <p className={styles.trustStrip}>
+            <span>MEN&apos;S FASHION</span><i>/</i><span>EASY SHOPPING</span><i>/</i><span>SAMALKHA</span>
+          </p>
         </div>
 
-        <div ref={visualRef} className={styles.visual}>
-          <div className={styles.scene}>
-            <div className={styles.ambientGlow} aria-hidden="true" />
+        <div ref={visualRef} className={styles.visual} aria-label="BRAND X floating fashion collection">
+          <div className={styles.faintWordmark} aria-hidden="true">BRANDX</div>
+          <div className={styles.orbit} aria-hidden="true" />
+          <div className={styles.accentDisc} aria-hidden="true" />
 
-            <div className={[styles.parallaxLayer, styles.chromeX].join(' ')} data-depth="0.35">
-              <span className={styles.chromeXText} aria-hidden="true">X</span>
-            </div>
-
-            {fashionObjects.map((obj) => (
-              <div
-                key={obj.id}
-                className={[styles.parallaxLayer, styles.fashionObject, obj.className].join(' ')}
-                data-depth={obj.depth}
-              >
-                <div className={styles.objectPlane}>
-                  <Image
-                    src={obj.src}
-                    alt={obj.alt}
-                    width={obj.width}
-                    height={obj.height}
-                    priority={obj.id === 'black-tee' || obj.id === 'cream-tee'}
-                    sizes="(max-width: 768px) 70vw, 420px"
-                    className={styles.objectImage}
-                  />
-                </div>
-              </div>
-            ))}
-
-            <div className={[styles.annotation, styles.annotationGsm].join(' ')}>
-              <span>HEAVYWEIGHT 450 GSM</span>
-            </div>
-            <div className={[styles.annotation, styles.annotationFit].join(' ')}>
-              <span>BOXY ARCHITECTURAL FIT</span>
-            </div>
+          {/* Background Particles Layer */}
+          <div
+            className={[styles.particleLayer, styles.backgroundParticles, styles.parallaxLayer].join(' ')}
+            data-depth="0.18"
+            aria-hidden="true"
+          >
+            <i className={[styles.particle, styles.sphere].join(' ')} style={{ '--x': '28%', '--y': '32%', '--size': '5px', '--delay': '-2s' }} />
+            <i className={[styles.particle, styles.chromeSphere].join(' ')} style={{ '--x': '48%', '--y': '22%', '--size': '6px', '--delay': '-5s' }} />
+            <i className={[styles.particle, styles.tinyCube].join(' ')} style={{ '--x': '64%', '--y': '36%', '--size': '6px', '--delay': '-1s' }} />
+            <i className={[styles.particle, styles.sphere].join(' ')} style={{ '--x': '54%', '--y': '58%', '--size': '4px', '--delay': '-4s' }} />
+            <i className={[styles.particle, styles.yellowSphere].join(' ')} style={{ '--x': '74%', '--y': '52%', '--size': '6px', '--delay': '-3s' }} />
           </div>
+
+          {/* Chrome Metal X (Anchor ~65-70% Visible) */}
+          <div className={`${styles.chromeX} ${styles.parallaxLayer}`} data-depth="0.35" aria-hidden="true">
+            <Image
+              src="/images/hero/hero-metal-x.png"
+              alt=""
+              width={1254}
+              height={1254}
+              sizes="(max-width: 600px) 44vw, 25vw"
+            />
+          </div>
+
+          {/* Midground Particles */}
+          <div
+            className={[styles.particleLayer, styles.midgroundParticles, styles.parallaxLayer].join(' ')}
+            data-depth="0.62"
+            aria-hidden="true"
+          >
+            <i className={[styles.particle, styles.blackTriangle].join(' ')} style={{ '--x': '36%', '--y': '44%', '--size': '9px', '--delay': '-4s' }} />
+            <i className={[styles.particle, styles.chromeSphere].join(' ')} style={{ '--x': '70%', '--y': '40%', '--size': '8px', '--delay': '-1s' }} />
+            <i className={[styles.particle, styles.yellowSphere].join(' ')} style={{ '--x': '44%', '--y': '72%', '--size': '7px', '--delay': '-5s' }} />
+            <i className={[styles.particle, styles.tinyCube].join(' ')} style={{ '--x': '58%', '--y': '48%', '--size': '8px', '--delay': '-2s' }} />
+          </div>
+
+          {/* Floating Garments & Products */}
+          {fashionObjects.map((object) => (
+            <div
+              key={object.id}
+              className={`${styles.fashionObject} ${styles.parallaxLayer} ${object.className}`}
+              data-depth={object.depth}
+            >
+              <div className={styles.objectPlane}>
+                <Image
+                  src={object.src}
+                  alt={object.alt}
+                  width={object.width}
+                  height={object.height}
+                  sizes="(max-width: 600px) 42vw, (max-width: 900px) 34vw, 22vw"
+                />
+              </div>
+            </div>
+          ))}
+
+          {/* Floating Abstract Shards */}
+          <div className={[styles.abstractObject, styles.blackShard, styles.parallaxLayer].join(' ')} data-depth="0.7" aria-hidden="true" />
+          <div className={[styles.abstractObject, styles.chromeFragment, styles.parallaxLayer].join(' ')} data-depth="0.48" aria-hidden="true" />
+          <div className={[styles.abstractObject, styles.yellowCube, styles.parallaxLayer].join(' ')} data-depth="0.8" aria-hidden="true" />
+
+          {/* Upper Annotations */}
+          <div className={`${styles.annotation} ${styles.newDrop}`}>NEW DROP</div>
+          <div className={`${styles.annotation} ${styles.brandLabel}`}>BRAND X</div>
         </div>
       </div>
     </section>
